@@ -31,7 +31,7 @@ import ca.empowered.nms.simulator.event.EventObserver;
 import ca.empowered.nms.simulator.event.Notification;
 import ca.empowered.nms.simulator.event.NotificationFactory;
 import ca.empowered.nms.simulator.node.NodeElement;
-import ca.empowered.nms.simulator.node.NodeTemplate;
+import ca.empowered.nms.simulator.topology.source.file.json.NodeTemplate;
 import ca.empowered.nms.simulator.utils.Constants.FILE_FORMAT;
 import ca.empowered.nms.simulator.utils.Constants.STATE;
 
@@ -194,22 +194,46 @@ public final class NodeManager {
 			log.error("NodeFactory is not initialized properly. Call init() before using it.");
 			return;
 		}
-		
-		for ( NodeTemplate nodeTemplate : nodeTemplates ) {
-			log.debug(" -> "+nodeTemplate.toString());
-			if ( !nodeTemplate.getEnabled() ) {
-				log.info(nodeTemplate.getName()+": this template is disabled");
-				continue;
+
+		// for a large data set, use multiple threads
+		//if (allNodes.size() > 5000) {
+			nodeTemplates
+				.parallelStream()
+				.forEach(nodeTemplate -> {
+					log.debug(" -> "+nodeTemplate.toString());
+					if ( !nodeTemplate.getEnabled() ) {
+						log.info(nodeTemplate.getName()+": this template is disabled");
+						return;
+					}
+					// TODO: divide this work in worker threads
+					for ( int i = 0; i < nodeTemplate.getCount(); i++ ) {
+						addNode(i,
+								nodeTemplate.getName(), 
+								nodeTemplate.getDescription(), 
+								nodeTemplate.getInitialState(), 
+								nodeTemplate.getRank(), 
+								nodeTemplate.getRelatableTo());
+					}
+				});
+		/*}
+		// for a small data set, use single thread
+		else {
+			for ( NodeTemplate nodeTemplate : nodeTemplates ) {
+				log.debug(" -> "+nodeTemplate.toString());
+				if ( !nodeTemplate.getEnabled() ) {
+					log.info(nodeTemplate.getName()+": this template is disabled");
+					continue;
+				}
+				for ( int i = 0; i < nodeTemplate.getCount(); i++ ) {
+					addNode(i,
+							nodeTemplate.getName(), 
+							nodeTemplate.getDescription(), 
+							nodeTemplate.getInitialState(), 
+							nodeTemplate.getRank(), 
+							nodeTemplate.getRelatableTo());
+				}
 			}
-			for ( int i = 0; i < nodeTemplate.getCount(); i++ ) {
-				addNode(i,
-						nodeTemplate.getName(), 
-						nodeTemplate.getDescription(), 
-						nodeTemplate.getInitialState(), 
-						nodeTemplate.getRank(), 
-						nodeTemplate.getRelatableTo());
-			}
-		}
+		}*/
 		
 		log.info("generated objects: " + graph.getNodeCount());
 		

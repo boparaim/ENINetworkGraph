@@ -6,7 +6,7 @@
 # 4k		3			0				1101ms		6496ms 			zoom feels sluggish upto certain zoom level (too many nodes in frame)
 # 40k		3			1134			1407ms		139s			mem: 3GB, disconnected nodes, incorrect topology computation
 # 400k		3			1601			5966ms		14872s = 4hrs	mem: 9GB
-# 1M		3			0				10765ms		
+# 1M		3			>0				10765ms		>27hrs			mem: 10GB
 
 # 700 objects (200 + 500) (1 -> 2 relations) (100 disconnected) creation: 510ms complete: 777ms    [500k iterations in 267ms] = 1835 iterations / ms
 # 7k objects (2k + 5k) (1 -> 2 relations) (1k disconnected) creation: 533ms complete: 6.5s					+8%		800MB

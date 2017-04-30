@@ -1,4 +1,4 @@
-package ca.empowered.nms.simulator.node;
+package ca.empowered.nms.simulator.topology.source.file.json;
 
 import java.util.HashMap;
 

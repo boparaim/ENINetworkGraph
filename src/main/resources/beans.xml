@@ -44,32 +44,32 @@
 		<property name="uiShowRelatedNodesOnClick" value="${eni.nms.simulator.ui.showRelatedNodesOnClick}" />
 	</bean>
 	
-	<!-- node template from json configuration file -->
+	<!-- node template from json configuration file 
 	<bean
 		id="jsonConfigurations"
 		class="ca.empowered.nms.simulator.config.JsonConfigurations">
 		<constructor-arg type="java.lang.String" value="config.json" />
-	</bean>
+	</bean>-->
 	
-	<!-- node manager for creating and relating nodes -->
+	<!-- node manager for creating and relating nodes 
 	<bean
 		id="nodeManager"
 		class="ca.empowered.nms.simulator.api.NodeManager"
 		init-method="init">	
 		<property name="eventObserver" ref="eventObserver" />
 		<property name="nodeTemplates" value="#{jsonConfigurations.nodeTemplates}" />
-	</bean>
+	</bean>-->
 	
-	<!-- event observer for nodes -->
+	<!-- event observer for nodes 
 	<bean
 		id="eventObserver"
 		class="ca.empowered.nms.simulator.event.EventObserver">	
-	</bean>
+	</bean>-->
 	
-	<!-- rest server api -->
+	<!-- rest server api 
 	<bean
 		id="restServer"
 		class="ca.empowered.nms.simulator.api.rest.RestServer">	
-	</bean>
+	</bean>-->
 
 </beans>
