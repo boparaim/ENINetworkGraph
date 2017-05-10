@@ -5,27 +5,15 @@
 # 400		3			0				1094ms		1270ms
 # 4k		3			0				1101ms		6496ms 			zoom feels sluggish upto certain zoom level (too many nodes in frame)
 # 40k		3			1134			1407ms		139s			mem: 3GB, disconnected nodes, incorrect topology computation
-# 400k		3			1601			5966ms		14872s = 4hrs	mem: 9GB
-# 1M		3			>0				10765ms		>27hrs			mem: 10GB
 
-# 700 objects (200 + 500) (1 -> 2 relations) (100 disconnected) creation: 510ms complete: 777ms    [500k iterations in 267ms] = 1835 iterations / ms
-# 7k objects (2k + 5k) (1 -> 2 relations) (1k disconnected) creation: 533ms complete: 6.5s					+8%		800MB
-# 14k 4k+10k 538ms, 37197ms with streams 9505ms
-# 29k 9k+20k 619ms, 40104ms (streams)
-# 40k 10k+30k 636ms, 81108ms (streams)
-# 70k objects (20k + 50k) (1 -> 2 relations) (10k disconnected) creation: 646ms complete: 1261s = 21mins	+180%	1.3GB	with stream: 265s = 4.5mins
-# 700k objects (200k + 500k) (1 -> 2 relations) (100k disconnected) creation: 3s completed: 10h+	
-# on VM 3GB 3cores i7@2.9GHz x 2
-# 120000 objects = 55% max, 400mb max, 700 threads(one peak) max 40 threads average, generated and notified in 3 hours
-# 12000 objects = 35% max, 100mb max, 40 threads max, generated and notified in 3 mins
-#
-# 263k nodes 2519ms, 7451s = 2hrs 9GB, 25%cpu
+# 100k		
+
 {
 	"nodes" : [
 		{
 			"name" : "LoadBalancer",
 			"description" : "",
-			"count" : 1,
+			"count" : 100000,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 100,
@@ -37,17 +25,13 @@
 				{
 					"name" : "NetworkConnection", 
 					"max" : 1
-				},
-				{
-					"name" : "BGPSession",
-					"max" : 1
 				}
 			]
 		},
 		{
 			"name" : "Router",
 			"description" : "",
-			"count" : 2,
+			"count" : 200000,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 90,
@@ -57,19 +41,11 @@
 					"max" : 1
 				},
 				{
-					"name" : "Router", 
-					"max" : 1
-				},
-				{
 					"name" : "Switch", 
 					"max" : 2
 				},
 				{
 					"name" : "NetworkConnection", 
-					"max" : 1
-				},
-				{
-					"name" : "BGPSession",
 					"max" : 1
 				}
 			]
@@ -77,7 +53,7 @@
 		{
 			"name" : "Switch",
 			"description" : "",
-			"count" : 4,
+			"count" : 400000,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 80,
@@ -99,49 +75,13 @@
 		{
 			"name" : "Host",
 			"description" : "",
-			"count" : 4,
+			"count" : 400000,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 70,
 			"relatable-to" : [
 				{
 					"name" : "Switch", 
-					"max" : 1
-				},
-				{
-					"name" : "Card", 
-					"max" : 2
-				}
-			]
-		},
-		{
-			"name" : "Card",
-			"description" : "",
-			"count" : 6,
-			"enabled" : true,
-			"init-state" : "UP",
-			"rank" : 60,
-			"relatable-to" : [
-				{
-					"name" : "Host", 
-					"max" : 1
-				},
-				{
-					"name" : "Interface", 
-					"max" : 2
-				}
-			]
-		},
-		{
-			"name" : "Interface",
-			"description" : "",
-			"count" : 12,
-			"enabled" : true,
-			"init-state" : "UP",
-			"rank" : 50,
-			"relatable-to" : [
-				{
-					"name" : "Card", 
 					"max" : 1
 				},
 				{
@@ -157,22 +97,22 @@
 		{
 			"name" : "WebApplication",
 			"description" : "",
-			"count" : 4,
+			"count" : 80000,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 40,
 			"relatable-to" : [
 				{
-					"name" : "Interface", 
-					"max" : 3
+					"name" : "Host", 
+					"max" : 1
 				}
 			]
 		},
 		{
 			"name" : "NetworkConnection",
 			"description" : "",
-			"count" : 2,
-			"enabled" : true,
+			"count" : 10000,
+			"enabled" : false,
 			"init-state" : "UP",
 			"rank" : 95,
 			"relatable-to" : [
@@ -182,29 +122,15 @@
 				},
 				{
 					"name" : "Router", 
-					"max" : 1
+					"max" : 2
 				},
 				{
 					"name" : "Switch", 
-					"max" : 1
+					"max" : 4
 				},
 				{
-					"name" : "Interface", 
-					"max" : 10
-				}
-			]
-		},
-		{
-			"name" : "BGPSession",
-			"description" : "",
-			"count" : 1,
-			"enabled" : true,
-			"init-state" : "UP",
-			"rank" : 95,
-			"relatable-to" : [
-				{
-					"name" : "Router", 
-					"max" : 4
+					"name" : "Host", 
+					"max" : 3
 				}
 			]
 		}

@@ -40,7 +40,7 @@ import org.graphstream.ui.view.util.DefaultShortcutManager;
 import org.graphstream.ui.view.util.MouseManager;
 import org.graphstream.ui.view.util.ShortcutManager;
 
-import ca.empowered.nms.simulator.config.Settings;
+import ca.empowered.nms.graph.config.Settings;
 
 import javax.swing.JFrame;
 import java.awt.BorderLayout;

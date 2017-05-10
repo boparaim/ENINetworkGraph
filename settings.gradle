@@ -16,5 +16,4 @@ include 'api'
 include 'services:webservice'
 */
 
-//rootProject.name = 'ENINetworkSimulator'
 rootProject.name = projectName

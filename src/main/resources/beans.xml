@@ -13,7 +13,7 @@
 	<!-- settings from application.properties -->
 	<bean
 		id="settings"
-		class="ca.empowered.nms.simulator.config.Settings">
+		class="ca.empowered.nms.graph.config.Settings">
 		<property name="appName" value="${eni.nms.simulator.appName}" />
 		<property name="nodeNameSuffix" value="${eni.nms.simulator.node.name.suffix}" />
 		<property name="evenlyDistributeRelationships" value="${eni.nms.simulator.relationship.distribution.even}" />
