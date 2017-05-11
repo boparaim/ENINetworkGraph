@@ -2,6 +2,7 @@ package ca.empowered.nms.graph.topology.source.file.json;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.Resource;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -45,9 +47,19 @@ public class JsonFileTopologySource extends TopologySource {
 	 * Read the file and create node templates.
 	 * 
 	 * @param file
+	 * @throws IOException 
 	 */
+	public JsonFileTopologySource(Resource configurationFileResource) throws IOException {
+		super(configurationFileResource);
+		init();
+	}
+	
 	public JsonFileTopologySource(File configurationFile) {
 		super(configurationFile);
+		init();
+	}
+	
+	public void init() {
 		try {
 			objectMapper = new ObjectMapper();
 			objectMapper.configure(JsonParser.Feature.ALLOW_YAML_COMMENTS, true);

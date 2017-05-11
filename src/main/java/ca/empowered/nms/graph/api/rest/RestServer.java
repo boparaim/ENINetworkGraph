@@ -5,17 +5,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 import static spark.Spark.put;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import ca.empowered.nms.graph.api.NodeManager;
 import ca.empowered.nms.graph.config.Settings;
 import spark.Request;
 import spark.Response;
@@ -115,42 +109,13 @@ public class RestServer {
         		.toArray(String[]::new);
         
         String data = "{}";
-        String pathText = Arrays.toString(path).replaceAll(", ", ".");
-        
-        //ArrayList<String> allNodes = null;
-        //HashMap<String, Notification> allNotifications = null;
-		String nodeName = null;
-		String newState = null;
-		//StringBuffer buffer = null;
+        //String pathText = Arrays.toString(path).replaceAll(", ", ".");
         
         switch (path[1]) {
 	        case "get":
 	        	switch (path[2]) {
 		        	case "help":
-		        		data = NodeManager.getHelp();
-		        		break;
 		        		
-		        	case "nodes":
-		        		data = NodeManager.getNodes();
-		        		break;
-		        		
-		        	case "node":
-		        		nodeName = request.params(":name");
-		        		data = NodeManager.getNode(nodeName, pathText);
-		        		break;
-		        		
-		        	case "related-nodes":
-		        		nodeName = request.params(":name");
-		        		data = NodeManager.getRelatedNodes(nodeName, pathText);
-		        		break;
-		        		
-		        	case "all-underlying-nodes":
-		        		nodeName = request.params(":name");
-		        		data = NodeManager.getAllUnderlyingNodes(nodeName, pathText);
-		        		break;
-		        		
-		        	case "notifications":
-		        		data = NodeManager.getNotifications();
 		        		break;
 		        		
 		        	default:
@@ -162,15 +127,7 @@ public class RestServer {
 	        case "set":
 	        	switch (path[2]) {
 		        	case "node-state":
-		        		nodeName = request.params(":name");
-		        		newState = request.params(":state");
-		        		data = NodeManager.setNodeState(nodeName, newState, pathText);
-		        		break;
-		        		
-		        	case "all-underlying-nodes-state":
-		        		nodeName = request.params(":name");
-		        		newState = request.params(":state");
-		        		data = NodeManager.setAllUnderlyingNodesState(nodeName, newState, pathText);		        		
+		        				        		
 		        		break;
 		        		
 	        		default:
@@ -190,50 +147,4 @@ public class RestServer {
 		return response;
 	}
 	
-	public static void sendJSON(String jsonPayload) {
-				
-		// TODO: this will cause an issue when # of objects goes above few Ks, use executor instead
-		new Thread() {
-			@Override
-			public void run() {
-				super.run();
-				try {
-					URL url = new URL(Settings.getRestDestinationURL());
-			
-					HttpURLConnection con = (HttpURLConnection) url.openConnection();
-					con.setDoOutput(true);
-					con.setDoInput(true);
-					con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-					con.setRequestProperty("Accept", "application/json");
-					con.setRequestMethod("POST");
-			
-					log.debug("sending HTTP request with JSON : "+jsonPayload);
-			
-					OutputStreamWriter wr = new OutputStreamWriter(con.getOutputStream());
-					wr.write(jsonPayload);
-					wr.flush();
-					
-					//display what returns the POST request	
-					StringBuilder sb = new StringBuilder();  
-					int HttpResult = con.getResponseCode(); 
-					if (HttpResult == HttpURLConnection.HTTP_OK) {
-					    BufferedReader br = new BufferedReader(
-					            new InputStreamReader(con.getInputStream(), "utf-8"));
-					    String line = null;  
-					    while ((line = br.readLine()) != null) {  
-					        sb.append(line + "\n");  
-					    }
-					    br.close();
-					    log.debug("received response: " + sb.toString());  
-					} else {
-						log.warn(con.getContent());
-						log.warn(con.getResponseMessage());  
-						log.warn(con.toString());
-					}
-				} catch (Exception e) {
-					log.debug(e.getMessage(), e);
-				}
-			}
-		}.start();		
-	}
 }

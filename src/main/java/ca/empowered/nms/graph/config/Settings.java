@@ -14,6 +14,27 @@ public final class Settings {
 	//private static final Logger log = LogManager.getLogger(Settings.class.getName());
 	
 	private static String appName;
+	private static String sourceConfigFile;
+	private static String outputInitialGraphFile;
+
+	public static String getAppName() {
+		return appName;
+	}
+	public static void setAppName(String appName) {
+		Settings.appName = appName;
+	}
+	public static String getSourceConfigFile() {
+		return sourceConfigFile;
+	}
+	public static void setSourceConfigFile(String sourceConfigFile) {
+		Settings.sourceConfigFile = sourceConfigFile;
+	}
+	public static String getOutputInitialGraphFile() {
+		return outputInitialGraphFile;
+	}
+	public static void setOutputInitialGraphFile(String outputInitialGraphFile) {
+		Settings.outputInitialGraphFile = outputInitialGraphFile;
+	}
 	private static String nodeNameSuffix;
 	private static Boolean evenlyDistributeRelationships;
 	private static Boolean randomizeEventGeneration;
@@ -42,12 +63,6 @@ public final class Settings {
 	private static String noisyEventGenerationEvents;
 	private static boolean uiShowRelatedNodesOnClick;
 	
-	public static String getAppName() {
-		return appName;
-	}
-	public static void setAppName(String appName) {
-		Settings.appName = appName;
-	}
 	public static String getNodeNameSuffix() {
 		return nodeNameSuffix;
 	}

@@ -1,12 +1,6 @@
 # windows 7 64bit 32GB i7 2x2.9GHz
 # nodes		#types		# disconnected	# creation	# completed		comments
-# 4			3			0				894ms		899ms
-# 40		3			0				909ms		930ms
-# 400		3			0				1094ms		1270ms
-# 4k		3			0				1101ms		6496ms 			zoom feels sluggish upto certain zoom level (too many nodes in frame)
-# 40k		3			1134			1407ms		139s			mem: 3GB, disconnected nodes, incorrect topology computation
-
-# 100k		
+# 10		3			0				894ms		899ms
 
 {
 	"nodes" : [

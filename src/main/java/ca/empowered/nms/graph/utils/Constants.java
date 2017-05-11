@@ -13,7 +13,7 @@ public class Constants {
 	/** possible severities for an event */
 	public static enum SEVERITY { CLEAR, INFO, MINOR, MAJOR, CRITICAL };
 	/** possible file formats for topology export */
-	public static enum FILE_FORMAT { TXT, JSON, XML };
+	public static enum TOPOLOGY_OUTPUT { DOT, PNG, JPEG };
 	/** possible node/edge info sources */
 	public static enum TOPOLOGY_SOURCE { JSON_FILE, MYSQL_DATABASE, SERIALIZED_OBJECT };
 }

@@ -14,7 +14,10 @@
 	<bean
 		id="settings"
 		class="ca.empowered.nms.graph.config.Settings">
-		<property name="appName" value="${eni.nms.simulator.appName}" />
+		<property name="appName" value="${eni.nms.graph.appName}" />
+		<property name="sourceConfigFile" value="${eni.nms.graph.source.file.config}" />
+		<property name="outputInitialGraphFile" value="${eni.nms.graph.output.file}" />
+		
 		<property name="nodeNameSuffix" value="${eni.nms.simulator.node.name.suffix}" />
 		<property name="evenlyDistributeRelationships" value="${eni.nms.simulator.relationship.distribution.even}" />
 		<property name="randomizeEventGeneration" value="${eni.nms.simulator.event.generation.randomize}" />
@@ -42,6 +45,30 @@
 		<property name="noisyEventGenerationInterval" value="${eni.nms.simulator.event.generation.noisy.interval}" />
 		<property name="noisyEventGenerationEvents" value="${eni.nms.simulator.event.generation.noisy.events}" />
 		<property name="uiShowRelatedNodesOnClick" value="${eni.nms.simulator.ui.showRelatedNodesOnClick}" />
+	</bean>
+	
+	<bean
+		id="jsonFileTopologySource"
+		class="ca.empowered.nms.graph.topology.source.file.json.JsonFileTopologySource">
+		<constructor-arg type="org.springframework.core.io.Resource" value="#{settings.sourceConfigFile}" />
+	</bean>
+	
+	<bean
+		id="topologySourceManager"
+		class="ca.empowered.nms.graph.topology.source.TopologySourceManager">
+		<constructor-arg  type="ca.empowered.nms.graph.topology.source.TopologySource"  ref="jsonFileTopologySource" />
+	</bean>
+	
+	<bean
+		id="gvFileTopologyOutput"
+		class="ca.empowered.nms.graph.topology.output.file.gv.GVFileTopologyOutput">
+		<constructor-arg type="org.springframework.core.io.Resource" value="#{settings.outputInitialGraphFile}" />
+	</bean>
+	
+	<bean
+		id="topologyOutputManager"
+		class="ca.empowered.nms.graph.topology.output.TopologyOutputManager">
+		<constructor-arg  type="ca.empowered.nms.graph.topology.output.TopologyOutput"  ref="gvFileTopologyOutput" />
 	</bean>
 	
 	<!-- node template from json configuration file 

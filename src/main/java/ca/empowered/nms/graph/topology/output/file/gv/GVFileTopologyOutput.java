@@ -1,11 +1,13 @@
 package ca.empowered.nms.graph.topology.output.file.gv;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.core.io.Resource;
 
 import ca.empowered.nms.graph.topology.element.Node;
 import ca.empowered.nms.graph.topology.output.TopologyOutput;
@@ -14,6 +16,10 @@ import ca.empowered.nms.graph.utils.Benchmark;
 public class GVFileTopologyOutput extends TopologyOutput {
 
 	private static final Logger log = LogManager.getLogger(GVFileTopologyOutput.class.getName());
+
+	public GVFileTopologyOutput(Resource configurationFileResource) throws IOException {
+		super(configurationFileResource);
+	}
 	
 	public GVFileTopologyOutput(MultiValuedMap<Node, Node> networkMap, File outputFile) {
 		super(networkMap, outputFile);
