@@ -1,15 +1,14 @@
 package ca.empowered.nms.graph.topology.source;
 
+import java.io.FileNotFoundException;
+
 import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import ca.empowered.nms.graph.topology.element.Node;
 
 public class TopologySourceManager {
 
-	private static final Logger log = LogManager.getLogger(TopologySourceManager.class.getName());
+	//private static final Logger log = LogManager.getLogger(TopologySourceManager.class.getName());
 	
 	private TopologySource topologySource;
 	
@@ -17,15 +16,10 @@ public class TopologySourceManager {
 		this.topologySource = topologySource;
 	}
 	
-	public MultiValuedMap<Node, Node> process() {
-		try {
-			this.topologySource.parseConfigurationFile();
-			this.topologySource.processConfigurationFile();
-			return this.topologySource.getNetworkMap();
-		} catch (Exception e) {
-			log.error(e.getMessage(), e);
-		}
-		return null;
+	public MultiValuedMap<Node, Node> process() throws FileNotFoundException {
+		this.topologySource.parseConfigurationFile();
+		this.topologySource.processConfigurationFile();
+		return this.topologySource.getNetworkMap();
 	}
 
 	public TopologySource getTopologySource() {

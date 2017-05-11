@@ -15,7 +15,13 @@ public final class Settings {
 	
 	private static String appName;
 	private static String sourceConfigFile;
+	private static boolean sourceReadContinuously;
+	private static int sourceReadInterval;
 	private static String outputInitialGraphFile;
+	private static String graphvizPath;
+	private static String graphvizLayout;
+	private static String graphvizFormat;
+	private static String graphvizOutputFile;
 
 	public static String getAppName() {
 		return appName;
@@ -29,11 +35,47 @@ public final class Settings {
 	public static void setSourceConfigFile(String sourceConfigFile) {
 		Settings.sourceConfigFile = sourceConfigFile;
 	}
+	public static boolean isSourceReadContinuously() {
+		return sourceReadContinuously;
+	}
+	public static void setSourceReadContinuously(boolean sourceReadContinuously) {
+		Settings.sourceReadContinuously = sourceReadContinuously;
+	}
+	public static int getSourceReadInterval() {
+		return sourceReadInterval;
+	}
+	public static void setSourceReadInterval(int sourceReadInterval) {
+		Settings.sourceReadInterval = sourceReadInterval * 1000 * 60;
+	}
 	public static String getOutputInitialGraphFile() {
 		return outputInitialGraphFile;
 	}
 	public static void setOutputInitialGraphFile(String outputInitialGraphFile) {
 		Settings.outputInitialGraphFile = outputInitialGraphFile;
+	}
+	public static String getGraphvizPath() {
+		return graphvizPath;
+	}
+	public static void setGraphvizPath(String graphvizPath) {
+		Settings.graphvizPath = graphvizPath;
+	}
+	public static String getGraphvizLayout() {
+		return graphvizLayout;
+	}
+	public static void setGraphvizLayout(String graphvizLayout) {
+		Settings.graphvizLayout = graphvizLayout;
+	}
+	public static String getGraphvizFormat() {
+		return graphvizFormat;
+	}
+	public static void setGraphvizFormat(String graphvizFormat) {
+		Settings.graphvizFormat = graphvizFormat;
+	}
+	public static String getGraphvizOutputFile() {
+		return graphvizOutputFile;
+	}
+	public static void setGraphvizOutputFile(String graphvizOutputFile) {
+		Settings.graphvizOutputFile = graphvizOutputFile;
 	}
 	private static String nodeNameSuffix;
 	private static Boolean evenlyDistributeRelationships;

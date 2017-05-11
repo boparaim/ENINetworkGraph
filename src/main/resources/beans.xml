@@ -16,7 +16,14 @@
 		class="ca.empowered.nms.graph.config.Settings">
 		<property name="appName" value="${eni.nms.graph.appName}" />
 		<property name="sourceConfigFile" value="${eni.nms.graph.source.file.config}" />
+		<property name="sourceReadContinuously" value="${eni.nms.graph.source.read.continuously}" />
+		<property name="sourceReadInterval" value="${eni.nms.graph.source.read.interval}" />
+		
 		<property name="outputInitialGraphFile" value="${eni.nms.graph.output.file}" />
+		<property name="graphvizPath" value="${eni.nms.graph.grpahviz.path}" />
+		<property name="graphvizLayout" value="${eni.nms.graph.grpahviz.layout}" />
+		<property name="graphvizFormat" value="${eni.nms.graph.grpahviz.format}" />
+		<property name="graphvizOutputFile" value="${eni.nms.graph.grpahviz.output.file}" />
 		
 		<property name="nodeNameSuffix" value="${eni.nms.simulator.node.name.suffix}" />
 		<property name="evenlyDistributeRelationships" value="${eni.nms.simulator.relationship.distribution.even}" />
@@ -69,6 +76,19 @@
 		id="topologyOutputManager"
 		class="ca.empowered.nms.graph.topology.output.TopologyOutputManager">
 		<constructor-arg  type="ca.empowered.nms.graph.topology.output.TopologyOutput"  ref="gvFileTopologyOutput" />
+	</bean>
+	
+	<bean
+		id="graphviz"
+		class="ca.empowered.nms.graph.api.cli.GraphViz">
+	</bean>
+	
+	<bean
+		id="topologyManager"
+		class="ca.empowered.nms.graph.topology.TopologyManager">
+		<constructor-arg type="ca.empowered.nms.graph.topology.source.TopologySourceManager"  ref="topologySourceManager" />
+		<constructor-arg type="ca.empowered.nms.graph.topology.output.TopologyOutputManager"  ref="topologyOutputManager" />
+		<constructor-arg type="ca.empowered.nms.graph.api.cli.GraphViz"  ref="graphviz" />
 	</bean>
 	
 	<!-- node template from json configuration file 
