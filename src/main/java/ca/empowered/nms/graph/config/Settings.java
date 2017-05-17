@@ -22,6 +22,9 @@ public final class Settings {
 	private static String graphvizLayout;
 	private static String graphvizFormat;
 	private static String graphvizOutputFile;
+	private static String restServerIP;
+	private static String restServerPort;
+	private static String restServerPath;
 
 	public static String getAppName() {
 		return appName;
@@ -77,13 +80,28 @@ public final class Settings {
 	public static void setGraphvizOutputFile(String graphvizOutputFile) {
 		Settings.graphvizOutputFile = graphvizOutputFile;
 	}
+	public static String getRestServerIP() {
+		return restServerIP;
+	}
+	public static void setRestServerIP(String restServerIP) {
+		Settings.restServerIP = restServerIP;
+	}
+	public static String getRestServerPort() {
+		return restServerPort;
+	}
+	public static void setRestServerPort(String restServerPort) {
+		Settings.restServerPort = restServerPort;
+	}
+	public static String getRestServerPath() {
+		return restServerPath;
+	}
+	public static void setRestServerPath(String restServerPath) {
+		Settings.restServerPath = restServerPath;
+	}
 	private static String nodeNameSuffix;
 	private static Boolean evenlyDistributeRelationships;
 	private static Boolean randomizeEventGeneration;
 	private static Integer randomizeEventGenerationInterval;
-	private static String restServerIP;
-	private static String restServerPort;
-	private static String restServerPath;
 	private static String restDestinationURL;
 	private static Boolean restClientEnabled;
 	private static String cssStyleSheet;
@@ -122,24 +140,6 @@ public final class Settings {
 	}
 	public static void setRandomizeEventGeneration(Boolean randomizeEventGeneration) {
 		Settings.randomizeEventGeneration = randomizeEventGeneration;
-	}
-	public static String getRestServerIP() {
-		return restServerIP;
-	}
-	public static void setRestServerIP(String restServerIP) {
-		Settings.restServerIP = restServerIP;
-	}
-	public static String getRestServerPort() {
-		return restServerPort;
-	}
-	public static void setRestServerPort(String restServerPort) {
-		Settings.restServerPort = restServerPort;
-	}
-	public static String getRestServerPath() {
-		return restServerPath;
-	}
-	public static void setRestServerPath(String restServerPath) {
-		Settings.restServerPath = restServerPath;
 	}
 	public static String getRestDestinationURL() {
 		return restDestinationURL;

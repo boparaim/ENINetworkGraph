@@ -9,9 +9,9 @@ import ca.empowered.nms.graph.topology.element.Node;
 
 public interface TopologyOutputWriter {
 
-	public boolean write() throws FileNotFoundException;
-	public boolean write(MultiValuedMap<Node, Node> networkMap) throws FileNotFoundException;
-	public boolean write(MultiValuedMap<Node, Node> networkMap, File outputFile) throws FileNotFoundException;
-	public boolean write(MultiValuedMap<Node, Node> networkMap, String outputFilePath) throws FileNotFoundException;
+	public boolean write() throws FileNotFoundException, SecurityException;
+	public boolean write(MultiValuedMap<Node, Node> networkMap) throws FileNotFoundException, SecurityException;
+	public boolean write(MultiValuedMap<Node, Node> networkMap, File outputFile) throws FileNotFoundException, SecurityException;
+	public boolean write(MultiValuedMap<Node, Node> networkMap, String outputFilePath) throws FileNotFoundException, SecurityException;
 	
 }

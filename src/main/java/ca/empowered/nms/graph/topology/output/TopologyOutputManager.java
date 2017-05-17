@@ -12,7 +12,7 @@ public class TopologyOutputManager {
 		this.topologyOutput = topologyOutput;
 	}
 	
-	public boolean process() throws FileNotFoundException {
+	public boolean process() throws FileNotFoundException, SecurityException {
 		return this.topologyOutput.write();
 	}
 

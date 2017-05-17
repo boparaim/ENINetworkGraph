@@ -91,32 +91,11 @@
 		<constructor-arg type="ca.empowered.nms.graph.api.cli.GraphViz"  ref="graphviz" />
 	</bean>
 	
-	<!-- node template from json configuration file 
-	<bean
-		id="jsonConfigurations"
-		class="ca.empowered.nms.simulator.config.JsonConfigurations">
-		<constructor-arg type="java.lang.String" value="config.json" />
-	</bean>-->
-	
-	<!-- node manager for creating and relating nodes 
-	<bean
-		id="nodeManager"
-		class="ca.empowered.nms.simulator.api.NodeManager"
-		init-method="init">	
-		<property name="eventObserver" ref="eventObserver" />
-		<property name="nodeTemplates" value="#{jsonConfigurations.nodeTemplates}" />
-	</bean>-->
-	
-	<!-- event observer for nodes 
-	<bean
-		id="eventObserver"
-		class="ca.empowered.nms.simulator.event.EventObserver">	
-	</bean>-->
-	
-	<!-- rest server api 
+	<!-- rest server api -->
 	<bean
 		id="restServer"
-		class="ca.empowered.nms.simulator.api.rest.RestServer">	
-	</bean>-->
-
+		class="ca.empowered.nms.graph.api.rest.RestServer">	
+		<constructor-arg type="ca.empowered.nms.graph.topology.TopologyManager"  ref="topologyManager" />
+	</bean>
+	
 </beans>

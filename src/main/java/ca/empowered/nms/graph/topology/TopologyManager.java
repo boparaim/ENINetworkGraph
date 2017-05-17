@@ -1,5 +1,6 @@
 package ca.empowered.nms.graph.topology;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.apache.commons.collections4.MultiValuedMap;
@@ -21,7 +22,7 @@ public class TopologyManager {
 		this.graphviz = graphviz;
 	}
 	
-	public boolean run() throws IOException {
+	public boolean run() throws IOException, FileNotFoundException, SecurityException {
 		boolean mapWithLayoutWrittenSuccessfully = false;
 		
 		MultiValuedMap<Node, Node> networkMap = topologySourceManager.process();
@@ -33,6 +34,30 @@ public class TopologyManager {
 		}
 		
 		return mapWithLayoutWrittenSuccessfully;
+	}
+
+	public TopologySourceManager getTopologySourceManager() {
+		return topologySourceManager;
+	}
+
+	public void setTopologySourceManager(TopologySourceManager topologySourceManager) {
+		this.topologySourceManager = topologySourceManager;
+	}
+
+	public TopologyOutputManager getTopologyOutputManager() {
+		return topologyOutputManager;
+	}
+
+	public void setTopologyOutputManager(TopologyOutputManager topologyOutputManager) {
+		this.topologyOutputManager = topologyOutputManager;
+	}
+
+	public GraphViz getGraphviz() {
+		return graphviz;
+	}
+
+	public void setGraphviz(GraphViz graphviz) {
+		this.graphviz = graphviz;
 	}
 	
 }

@@ -27,7 +27,7 @@ public abstract class TopologyOutput implements TopologyOutputWriter {
 	}
 	
 	@Override
-	public boolean write(MultiValuedMap<Node, Node> networkMap, String outputFilePath) throws FileNotFoundException {
+	public boolean write(MultiValuedMap<Node, Node> networkMap, String outputFilePath) throws FileNotFoundException, SecurityException {
 		File file = new File(outputFilePath);
         boolean fileCreated = false;
         try {
@@ -46,7 +46,7 @@ public abstract class TopologyOutput implements TopologyOutputWriter {
 	}
 	
 	@Override
-	public boolean write(MultiValuedMap<Node, Node> networkMap) throws FileNotFoundException {
+	public boolean write(MultiValuedMap<Node, Node> networkMap) throws FileNotFoundException, SecurityException {
 		if (this.outputFile == null) {
 			log.error("no output file defined.");
 			throw new FileNotFoundException();
@@ -55,7 +55,7 @@ public abstract class TopologyOutput implements TopologyOutputWriter {
 	}
 	
 	@Override
-	public boolean write() throws FileNotFoundException {
+	public boolean write() throws FileNotFoundException, SecurityException {
 		if (this.networkMap == null) {
 			log.error("not valid network map");
 			return false;

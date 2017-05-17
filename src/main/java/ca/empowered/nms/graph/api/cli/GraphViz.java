@@ -10,28 +10,36 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import ca.empowered.nms.graph.config.Settings;
+import ca.empowered.nms.graph.utils.Benchmark;
 
 public class GraphViz {
 
 	private static final Logger log = LogManager.getLogger(GraphViz.class.getName());
+
+	String graphvizApplication;
+	String format;
+	String inputFile;
+	String outputFile;
 	
-	public boolean run() throws IOException {
-		String app = Settings.getGraphvizPath()+File.pathSeparator+"bin"+File.pathSeparator+Settings.getGraphvizLayout()+".exe";
-		String format = "-T"+Settings.getGraphvizFormat();
-		String inputFile = "bin"+File.pathSeparator+Settings.getOutputInitialGraphFile();
-		String outputFile = "-obin"+File.pathSeparator+Settings.getGraphvizOutputFile();
-		
+	public GraphViz() {
+		graphvizApplication = Settings.getGraphvizPath()+File.separator+"bin"+File.separator+Settings.getGraphvizLayout()+".exe";
+		format = Settings.getGraphvizFormat();
+		inputFile = "bin"+File.separator+Settings.getOutputInitialGraphFile();
+		outputFile = "bin"+File.separator+Settings.getGraphvizOutputFile();
+	}
+	
+	public boolean run() throws IOException {		
 		log.debug("calling graphviz:\n"
-				+ "app: "+app
-				+ "format: "+format
-				+ "input: "+inputFile
+				+ "app: "+graphvizApplication+"\n"
+				+ "format: "+format+"\n"
+				+ "input: "+inputFile+"\n"
 				+ "output: "+outputFile);
 		
 		Process process = new ProcessBuilder(new String[]{
-				app,
-				format,
+				graphvizApplication,
+				"-T"+format,
 				inputFile, 
-				outputFile
+				"-o"+outputFile
 			}).start();
 		InputStream stdout = process.getInputStream();
 		InputStream stderr = process .getErrorStream();
@@ -48,7 +56,35 @@ public class GraphViz {
 			log.debug("stderr: "+line);
 			return false;
 		}
+		
+		log.debug("graphviz layout computation took "+Benchmark.diffFromLast("milli")+"ms");
+		
 		return true;
+	}
+
+	public String getGraphvizApplication() {
+		return graphvizApplication;
+	}
+	public void setGraphvizApplication(String graphvizApplication) {
+		this.graphvizApplication = graphvizApplication;
+	}
+	public String getFormat() {
+		return format;
+	}
+	public void setFormat(String format) {
+		this.format = format;
+	}
+	public String getInputFile() {
+		return inputFile;
+	}
+	public void setInputFile(String inputFile) {
+		this.inputFile = inputFile;
+	}
+	public String getOutputFile() {
+		return outputFile;
+	}
+	public void setOutputFile(String outputFile) {
+		this.outputFile = outputFile;
 	}
 	
 }

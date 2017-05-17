@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.core.io.Resource;
@@ -80,6 +79,7 @@ public class JsonFileTopologySource extends TopologySource {
 			return;
 		}
 		
+		nodeTemplates.clear();
 		JsonNode nodes = jsonRootNode.path("nodes");
 		for ( JsonNode node : nodes ) {
 			//log.debug(node.toString());
@@ -112,16 +112,6 @@ public class JsonFileTopologySource extends TopologySource {
 		log.debug("reading the conf file took "+Benchmark.diffFromLast("milli")+"ms");
 	}
 
-	/**
-	 * Get node templates.
-	 * 
-	 * @return
-	 */
-	@Override
-	public MultiValuedMap<Node, Node> getNetworkMap() {
-		return networkMap;
-	}
-	
 	public void addNodes(int start, int count, String className, String description, STATE initialState, int rank,  HashMap<String, Integer> relatableTo) {
 		for (int i = start; i < (start + count); i++) {
 			String instanceName = className + "-" + (i + 1000) + Settings.getNodeNameSuffix();
@@ -157,13 +147,16 @@ public class JsonFileTopologySource extends TopologySource {
 
 	@Override
 	public void processConfigurationFile() {
+		nodes.clear();
+		networkMap.clear();
+		
 		// 70k nodes = 1700ms
 		// 700k nodes = 2000ms
 		// 7M nodes = 7400ms
 		for ( NodeTemplate nodeTemplate : nodeTemplates ) {
 			log.debug(" -> "+nodeTemplate.toString());
 			if ( !nodeTemplate.getEnabled() ) {
-				log.info(nodeTemplate.getName()+": this template is disabled");
+				log.info(" -> name : "+nodeTemplate.getName()+": is disabled");
 				continue;
 			}
 			addNodes(0, nodeTemplate.getCount(),
