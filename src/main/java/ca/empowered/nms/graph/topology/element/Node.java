@@ -3,14 +3,11 @@ package ca.empowered.nms.graph.topology.element;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import ca.empowered.nms.graph.utils.Constants.STATE;
 
 public class Node {
 
-	private static final Logger log = LogManager.getLogger(Node.class.getName());
+	//private static final Logger log = LogManager.getLogger(Node.class.getName());
 	
 	private String name;
 	private String className;
@@ -22,6 +19,12 @@ public class Node {
 	
 	private static Object lock = new Object();
 	
+	/**
+	 * Utility method for deciding whether or not the given node can be attached to this node.
+	 * 
+	 * @param otherNode
+	 * @return
+	 */
 	public boolean isRelatableTo(Node otherNode) {
 		boolean isValid = false;
 		Node thisNode = this;
@@ -59,33 +62,20 @@ public class Node {
 		int otherNodeThisPossibleCount = 0;
 		
 		synchronized (lock) {
-			//synchronized (otherNode) {
-
-				thisNodeOtherPossibleCount = thisNode.relatableTo.get(otherNodeClass);
-				otherNodeThisPossibleCount = otherNode.relatableTo.get(thisNodeClass);
+			thisNodeOtherPossibleCount = thisNode.relatableTo.get(otherNodeClass);
+			otherNodeThisPossibleCount = otherNode.relatableTo.get(thisNodeClass);
+			
+			// validate we haven't passed the limit on any side
+			if (thisNodeOtherPossibleCount > 0
+					&& otherNodeThisPossibleCount > 0) {
 				
-				// validate we haven't passed the limit on any side
-				if (thisNodeOtherPossibleCount > 0
-						&& otherNodeThisPossibleCount > 0) {
-					/*log.debug("** before "+thisNode.getName()+" & "+otherNode.getName()+" count this - "+thisNodeOtherPossibleCount
-							+" count other - "+otherNodeThisPossibleCount);*/
-					//synchronized (thisNode) {
-						thisNode.relatableTo.put(otherNodeClass, (thisNodeOtherPossibleCount - 1));
-						thisNode.connectedTo.add(otherNode.getName());
-					//}
-					//synchronized (otherNode) {
-						otherNode.relatableTo.put(thisNodeClass, (otherNodeThisPossibleCount - 1));
-						otherNode.connectedTo.add(thisNode.getName());
-					//}
-						
-					/*thisNodeOtherPossibleCount = thisNode.relatableTo.get(otherNodeClass);
-					otherNodeThisPossibleCount = otherNode.relatableTo.get(thisNodeClass);
-					log.debug("** after "+thisNode.getName()+" & "+otherNode.getName()+" count this - "+thisNodeOtherPossibleCount
-							+" count other - "+otherNodeThisPossibleCount);
-					*/
-					isValid = true;
-				}
-			//}
+				thisNode.relatableTo.put(otherNodeClass, (thisNodeOtherPossibleCount - 1));
+				thisNode.connectedTo.add(otherNode.getName());
+			
+				otherNode.relatableTo.put(thisNodeClass, (otherNodeThisPossibleCount - 1));
+				otherNode.connectedTo.add(thisNode.getName());
+				isValid = true;
+			}
 		}
 		
 		return isValid;

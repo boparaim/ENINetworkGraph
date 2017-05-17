@@ -51647,14 +51647,14 @@ return /******/ (function(modules) { // webpackBootstrap
 
     first();
     getToken();
-    console.log('token1: '+token+' type: '+tokenType);
+    //console.log('token1: '+token+' type: '+tokenType);
 
     // optional strict keyword
     if (token === 'strict') {
       graph.strict = true;
       getToken();
     }
-    console.log('token2: '+token+' type: '+tokenType);
+    //console.log('token2: '+token+' type: '+tokenType);
 
     // graph or digraph keyword
     if (token === 'graph' || token === 'digraph') {
@@ -51675,7 +51675,7 @@ return /******/ (function(modules) { // webpackBootstrap
       throw newSyntaxError('Angle bracket { expected');
     }
     getToken();
-    console.log('token5: '+token+' type: '+tokenType);
+    //console.log('token5: '+token+' type: '+tokenType);
 
     // statements
     parseStatements(graph);

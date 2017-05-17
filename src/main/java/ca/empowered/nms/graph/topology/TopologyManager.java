@@ -10,6 +10,12 @@ import ca.empowered.nms.graph.topology.element.Node;
 import ca.empowered.nms.graph.topology.output.TopologyOutputManager;
 import ca.empowered.nms.graph.topology.source.TopologySourceManager;
 
+/**
+ * This is the highest level manager which controls input source, intermediate layout engine and output target.
+ * 
+ * @author mboparai
+ *
+ */
 public class TopologyManager {
 
 	TopologySourceManager topologySourceManager;
@@ -22,7 +28,7 @@ public class TopologyManager {
 		this.graphviz = graphviz;
 	}
 	
-	public boolean run() throws IOException, FileNotFoundException, SecurityException {
+	public boolean process() throws IOException, FileNotFoundException, SecurityException {
 		boolean mapWithLayoutWrittenSuccessfully = false;
 		
 		MultiValuedMap<Node, Node> networkMap = topologySourceManager.process();
@@ -30,7 +36,9 @@ public class TopologyManager {
 		boolean mapWithoutLayoutWrittenSuccessfully = topologyOutputManager.process();
 		
 		if (mapWithoutLayoutWrittenSuccessfully) {
-			mapWithLayoutWrittenSuccessfully = graphviz.run();
+			mapWithLayoutWrittenSuccessfully = graphviz.process();
+			if (mapWithLayoutWrittenSuccessfully)
+				graphviz.postProcessing();
 		}
 		
 		return mapWithLayoutWrittenSuccessfully;

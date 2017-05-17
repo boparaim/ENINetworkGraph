@@ -11,10 +11,23 @@ import org.springframework.core.io.Resource;
 
 import ca.empowered.nms.graph.topology.element.Node;
 
+/**
+ * Use this class for all output extensions.
+ * Extend and implement the output logic in write(Map, File) method.
+ * 
+ * @author mboparai
+ *
+ */
 public abstract class TopologyOutput implements TopologyOutputWriter {
 
 	private static final Logger log = LogManager.getLogger(TopologyOutput.class.getName());
+	/**
+	 * The output file, where the final layout will be written.
+	 */
 	protected File outputFile;
+	/**
+	 * Current network map provided by the source manager.
+	 */
 	protected MultiValuedMap<Node, Node> networkMap;
 
 	protected TopologyOutput(Resource outputFile) throws IOException {
@@ -38,20 +51,13 @@ public abstract class TopologyOutput implements TopologyOutputWriter {
 			log.error("unable to create output file at given path.", e);
         	throw new FileNotFoundException();
         }
-		if (this.outputFile == null) {
-			log.error("no output file defined.");
-			throw new FileNotFoundException();
-		}
-		return write(networkMap, outputFile);
+		return write(networkMap);
 	}
 	
 	@Override
 	public boolean write(MultiValuedMap<Node, Node> networkMap) throws FileNotFoundException, SecurityException {
-		if (this.outputFile == null) {
-			log.error("no output file defined.");
-			throw new FileNotFoundException();
-		}
-		return write(networkMap, outputFile);
+		this.networkMap = networkMap;
+		return write();
 	}
 	
 	@Override
@@ -64,7 +70,7 @@ public abstract class TopologyOutput implements TopologyOutputWriter {
 			log.error("no output file defined.");
 			throw new FileNotFoundException();
 		}
-		return write(networkMap, outputFile);
+		return write(this.networkMap, this.outputFile);
 	}
 
 	public File getOutputFile() {

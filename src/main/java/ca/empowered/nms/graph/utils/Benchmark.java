@@ -1,5 +1,11 @@
 package ca.empowered.nms.graph.utils;
 
+/**
+ * Utility class for getting the duration passed b/w two operations.
+ * 
+ * @author mboparai
+ *
+ */
 public class Benchmark {
 
 	private static long now;

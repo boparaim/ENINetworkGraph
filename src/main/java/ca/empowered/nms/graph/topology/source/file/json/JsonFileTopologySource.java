@@ -22,7 +22,10 @@ import ca.empowered.nms.graph.utils.Benchmark;
 import ca.empowered.nms.graph.utils.Constants.STATE;
 
 /**
+ * Final implementation of TopologySource to be used with TopologySourceManager.
  * This entity reads json configuration file and builds node templates from it.
+ * It can be used for getting a network map built using the instructions given
+ * in a json configuration file.
  * 
  * @author mboparai
  *
@@ -173,7 +176,7 @@ public class JsonFileTopologySource extends TopologySource {
 		// 7k nodes = 900ms
 		// 70k nodes = 45s
 		// 700k nodes = 1hr
-		// 7M nodes = \
+		// 7M nodes = 
 		// this is faster but produces incorrect map
 		nodes
 			.parallelStream()

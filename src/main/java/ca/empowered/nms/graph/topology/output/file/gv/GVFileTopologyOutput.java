@@ -15,6 +15,14 @@ import ca.empowered.nms.graph.topology.element.Node;
 import ca.empowered.nms.graph.topology.output.TopologyOutput;
 import ca.empowered.nms.graph.utils.Benchmark;
 
+/**
+ * Final implementation of TopologyOutput to be used with TopologyOutputManager.
+ * This entity writes the given network map to the given file.
+ * It can be used for writing out the network map in dot format (http://www.graphviz.org/content/dot-language)
+ * 
+ * @author mboparai
+ *
+ */
 public class GVFileTopologyOutput extends TopologyOutput {
 
 	private static final Logger log = LogManager.getLogger(GVFileTopologyOutput.class.getName());

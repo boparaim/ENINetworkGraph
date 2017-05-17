@@ -13,12 +13,33 @@ import org.springframework.core.io.Resource;
 
 import ca.empowered.nms.graph.topology.element.Node;
 
+/**
+ * Input source can be anything - file/DB/WebService
+ * 
+ * Use this class for all source extensions.
+ * Extend and implement the source parsing logic in parseConfigurationFile(File)
+ * and map creation logic in processConfigurationFile()
+ * 
+ * @author mboparai
+ *
+ */
 public abstract class TopologySource implements TopologySourceParser {
 
 	private static final Logger log = LogManager.getLogger(TopologySource.class.getName());
 	
+	/**
+	 * Configuration file for this source.
+	 */
 	protected File configurationFile;
+	/**
+	 * Nodes in the network.
+	 */
 	protected ArrayList<Node> nodes = new ArrayList<>();
+	/**
+	 * Network map.
+	 * A -> B,C
+	 * B -> E
+	 */
 	protected MultiValuedMap<Node, Node> networkMap = new ArrayListValuedHashMap<>();
 
 	protected TopologySource(Resource configurationFileResource) throws IOException {

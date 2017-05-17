@@ -5,8 +5,8 @@
 script=$(readlink -f "$0")
 mypath=$(dirname "$script")
 javapath=java
-mainclass=ca.empowered.nms.simulator.Main
+mainclass=ca.empowered.nms.graph.Main
 classpath="$mypath/../conf/:$mypath/../libs/*"
-jvmopts="-Dlog4j.debug -Dsun.java2d.opengl=True -Dsun.java2d.directx=True -Dorg.graphstream.ui.renderer=org.graphstream.ui.j2dviewer.J2DGraphRenderer"
+jvmopts="-Dlog4j.debug"
 
 $javapath $jvmopts -cp $classpath $mainclass

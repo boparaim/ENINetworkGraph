@@ -15,5 +15,5 @@ public class Constants {
 	/** possible file formats for topology export */
 	public static enum TOPOLOGY_OUTPUT { DOT, PNG, JPEG };
 	/** possible node/edge info sources */
-	public static enum TOPOLOGY_SOURCE { JSON_FILE, MYSQL_DATABASE, SERIALIZED_OBJECT };
+	public static enum TOPOLOGY_SOURCE { TEXT_FILE, JSON_FILE, MYSQL_DATABASE, SERIALIZED_OBJECT };
 }

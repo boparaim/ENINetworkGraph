@@ -1,8 +1,11 @@
+// @author mboparai
 //
+// eninetworkgraph.js
 
 $(document).ready(function() {
 	console.log("start: ENINetworkGraph");
 	
+	// first - read the network from server and present it to the user
 	$.ajax({
 		url: "http://127.0.0.1:4567/ENINetworkGraph/get/graph/layout",
 		type: "GET",
@@ -10,43 +13,36 @@ $(document).ready(function() {
 		dataType: "json",
 		success: function(data) {
 			console.log("success for http://127.0.0.1:4567/ENINetworkGraph/get/graph/layout data: "+data);
-			//console.log(data.message.replace(/\\"/g, '"'));
 			var graphString = JSON.stringify(data.message)
-									.replace(/\\"/g, '"')
-									.replace(/{/g, '{ ')
+									.replace(/\\"/g, '"')		// remove json encoding
+									.replace(/{/g, '{ ')		// add some white space
 									.replace(/\[/g, '[ ');
-			graphString = graphString.substr(1, graphString.length - 2);
+			graphString = graphString.substr(1, graphString.length - 2);	// strip quotes
 			//console.log(graphString);
+			console.log('string maniputation done');
+			
+			// read dot input in vis.js
 			var parsedData = vis.network.convertDot(graphString);
-			
-			/*console.log(typeof parsedData.edges);
-			console.log(parsedData.nodes);
-			console.log(parsedData.edges);*/
-			
+			var options = parsedData.options;
 			var data = {
 				nodes: parsedData.nodes,
 				edges: parsedData.edges
 			}
+			console.log('data is set');
 			
-			data.nodes.forEach(function t(e, i, arr) {
-				//console.log('this element in nodes - '+i);
+			// now doing this on server
+			/*data.nodes.forEach(function t(e, i, arr) {
 				var pos = e.pos;
 				var x = Number(pos.split(',')[0]);
 				var y = Number(pos.split(',')[1]);
-				//console.log(x+' '+y+' ('+pos+')');
-				/*e.x = x;
-				e.y = y;*/
-				//console.log(e);
-			});
+			});*/
 			
-
-			var options = parsedData.options;
-
-			// you can extend the options like a normal JSON variable:
+			// we can extend the options like a normal JSON variable:
 			options.nodes = {
 				//color: 'red'
 			}
 			
+			// disable layout
 			options.layout = {
 				improvedLayout : false,
 				hierarchical : {
@@ -54,6 +50,7 @@ $(document).ready(function() {
 				}
 			};
 			
+			// disable physics - we have already computed the final layout on server
 			options.physics = {
 				enabled : false,
 				barnesHut : {
@@ -64,10 +61,12 @@ $(document).ready(function() {
 				}
 			};
 			
+			// present the results
 			var container = document.getElementById('eniNetworkGraphContainer');
-
+			
 			// create a network
 			var network = new vis.Network(container, data, options);
+			console.log('network is on canvas');
 		},
 		error: function(xhr, status, error) {
 			var err = eval("(" + xhr.responseText + ")");

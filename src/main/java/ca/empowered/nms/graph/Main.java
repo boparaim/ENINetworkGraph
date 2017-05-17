@@ -1,8 +1,5 @@
 package ca.empowered.nms.graph;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,11 +23,13 @@ public class Main {
 
 	private static final Logger log = LogManager.getLogger(Main.class.getName());
 	
+	/**
+	 * Not used in current setup. Kept for future use.
+	 */
 	public static ExecutorService executor;
 	
 	public static void main(String[] args) {
 		
-		//long startTime = System.nanoTime();
 		Benchmark.init();
 		
 		log.info("INIT: ENINetworkSimulator");
@@ -42,16 +41,23 @@ public class Main {
 			
 			log.debug("initialization took "+Benchmark.diffFromLast("milli")+"ms");
 			
+			/*
+			 * TopologyManager
+			 * 		TopologySourceManager
+			 * 			TopologySource		<-	file,db,etc
+			 * 		TopologyOutputManager
+			 * 			TopologyOutput		-> dot file
+			 */
 			TopologyManager topologyManager = (TopologyManager) context.getBean("topologyManager");
 			boolean mapWithLayoutWrittenSuccessfully = false;
 			
 			if (!Settings.isSourceReadContinuously()) {
 				log.debug("reading source for network map");
-				mapWithLayoutWrittenSuccessfully = topologyManager.run();
+				mapWithLayoutWrittenSuccessfully = topologyManager.process();
 			}
 			while (Settings.isSourceReadContinuously()) {
 				log.debug("reading source for network map");
-				mapWithLayoutWrittenSuccessfully = topologyManager.run();
+				mapWithLayoutWrittenSuccessfully = topologyManager.process();
 				
 				Thread.sleep(Settings.getSourceReadInterval());
 			}
@@ -68,12 +74,8 @@ public class Main {
 			
 			((ConfigurableApplicationContext)context).close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
-		
-		/*long endTime = System.nanoTime();
-		long timeDiff = endTime - startTime;
-		log.info("END: took "+timeDiff+"(ns) "+(timeDiff/1000000)+"(ms) or "+(timeDiff/1000000000)+"(s)");*/
 	}
 
 }

@@ -6,6 +6,12 @@ import org.apache.commons.collections4.MultiValuedMap;
 
 import ca.empowered.nms.graph.topology.element.Node;
 
+/**
+ * This entity executes the defined source extension/plugin.
+ * 
+ * @author mboparai
+ *
+ */
 public class TopologySourceManager {
 
 	//private static final Logger log = LogManager.getLogger(TopologySourceManager.class.getName());

@@ -4,10 +4,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.apache.commons.collections4.MultiValuedMap;
-import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 import ca.empowered.nms.graph.topology.element.Node;
 
+/**
+ * Base interface used by TopologySourceManger.
+ * @see TopologySource for extending the functionality.
+ * 
+ * @author mboparai
+ *
+ */
 public interface TopologySourceParser {
 
 	/**

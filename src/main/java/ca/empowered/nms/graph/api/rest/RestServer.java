@@ -1,9 +1,6 @@
 package ca.empowered.nms.graph.api.rest;
 
-import static spark.Spark.delete;
 import static spark.Spark.get;
-import static spark.Spark.post;
-import static spark.Spark.put;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -13,9 +10,6 @@ import java.util.Arrays;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 
 import ca.empowered.nms.graph.config.Settings;
 import ca.empowered.nms.graph.topology.TopologyManager;
@@ -34,7 +28,10 @@ public class RestServer {
 
 	private static final Logger log = LogManager.getLogger(RestServer.class.getName());
 	
-	TopologyManager topologyManager;
+	/**
+	 * This is not used here for now, but is kept for future use.
+	 */
+	private TopologyManager topologyManager;
 	
 	/**
 	 * RestServer - add all managed paths.
@@ -45,12 +42,12 @@ public class RestServer {
 				+Settings.getRestServerPath());
 		
 		this.topologyManager = topologyManager;
-		
+
+		Spark.staticFileLocation("/public");
 		System.setProperty("SPARK_LOCAL_IP", Settings.getRestServerIP());
 		// TODO: this doesn't work
 		System.setProperty("SPARK_LOCAL_PORT", String.valueOf(Settings.getRestServerPort()));
 		
-		Spark.staticFileLocation("/public");
 		
 		// using apache spark
 		// by default port is 4567
@@ -69,18 +66,6 @@ public class RestServer {
         });
 		
 		get(Settings.getRestServerPath()+"/get/graph/layout", (request, response) -> {
-			return processWebRequest(request, response).body();
-		});
-		
-        post(Settings.getRestServerPath(), (request, response) -> {
-            return processWebRequest(request, response).body();
-        });
-		
-		put(Settings.getRestServerPath()+"/set/node-state/:state", (request, response) -> {
-			return processWebRequest(request, response).body();
-		});
-
-		delete(Settings.getRestServerPath()+"/", (request, response) -> {
 			return processWebRequest(request, response).body();
 		});
 	}
@@ -103,47 +88,39 @@ public class RestServer {
         		.toArray(String[]::new);
         
         String data = "{}";
-        //String pathText = Arrays.toString(path).replaceAll(", ", ".");
+        String method = Arrays.toString(path).replaceAll(", ", ".");
+        
+        String status = "ERROR";
+        String payload = "Undefined method.";
         
         switch (path[1]) {
 	        case "get":
 	        	switch (path[2]) {
 		        	case "help":
-		        		data = "running !!";
+		        		status = "SUCCESS";
+		        		payload = "Available paths: \n"
+		        				+ "/get/help\t\t shows this help\n"
+		        				+ "/get/graph/layout\t\t gives initial layout in dot format.\n";
 		        		break;
 		        	case "graph":
 		        		switch (path[3]) {
 		        			case "layout":
-		        				data = readLayoutFile();
+				        		status = "SUCCESS";
+		        				payload = readLayoutFile();
 		        				break;
 		        			default:
 		        		}
-		        		break;
-		        		
-		        	default:
-		        		
+		        		break;		        		
+		        	default:		        		
 	        	}
-	        	break;
-	        case "post":
-	        	break;
-	        case "set":
-	        	switch (path[2]) {
-		        	case "node-state":
-		        				        		
-		        		break;
-		        		
-	        		default:
-	        			
-	        	}
-	        	break;
-	        case "delete":
 	        	break;
         	default:
-        		data = "{\"method\":\""+Arrays.toString(path).replaceAll(", ", ".")
-        				+"\", \"status\":\"ERROR\", \"message\":\"Undefined method.\"}";
         }
         
-        //JSONObject event = new Event().toJSON();
+        data = "{\"method\":\""+method + "\", "
+				+ "\"status\":\""+status+"\", "
+				+ "\"payload\":\""+payload+"\"}";
+        
 		log.debug("duration["+Benchmark.diffFromLast("milli")+"ms] "+request.requestMethod() 
 				+ " request at " + request.pathInfo() + " Response: " + data);
 		//response.redirect("index.html");
@@ -152,10 +129,14 @@ public class RestServer {
 		return response;
 	}
 	
+	/**
+	 * Reads the final layout file and computes x,y coordinates from 'pos' attributes for each node.
+	 * TODO: implement streams, this will break if the resulting string is > 2^31-1
+	 * 
+	 * @return String containing usable graph description in dot format.
+	 */
 	private String readLayoutFile() {
-		//File graphLayoutFile = topologyManager.getTopologyOutputManager().getTopologyOutput().getOutputFile();
-		//File graphLayoutFile = new File(topologyManager.getGraphviz().getOutputFile());
-		File graphLayoutFile = new File("bin"+File.separator+Settings.getGraphvizOutputFile());
+		File graphLayoutFile = new File(Settings.getGraphvizOutputFile());
 		
 		try {
 			if (!graphLayoutFile.exists())
@@ -173,67 +154,15 @@ public class RestServer {
 	        
 	        log.debug("reading of layout file took "+Benchmark.diffFromLast("milli")+"ms");
 	        
-	        int nodes = 0;
-	        String[] originalLines = fileData.toString().split("\n");
-	        String[] newLines = fileData.toString().split("\n");
-	        //log.debug("lines: "+originalLines.length);
-	        for (int i=0; i<originalLines.length; i++) {
-	        	if (originalLines[i].trim().matches(".*pos=\"[0-9.e+-]+,[0-9.e+-]+\".*")) {
-	        		nodes++;
-	        		String positionLine = originalLines[i];
-	        		int indexFirstQuote = positionLine.indexOf('"');
-	        		int indexComma = positionLine.indexOf(',');
-	        		int indexSecondQuote = positionLine.indexOf('"', indexFirstQuote+1);
-	        		
-	        		//log.debug(positionLine+" "+indexFirstQuote+" "+indexComma+" "+indexSecondQuote);
-	        		
-	        		String x = positionLine.substring(indexFirstQuote + 1, indexComma);
-	        		String y = positionLine.substring(indexComma + 1, indexSecondQuote);
-	        		
-	        		//log.debug("x: "+x+", y: "+y);
-	        		newLines[i] = positionLine.substring(0, indexSecondQuote) 
-	        						+ "\",x=" + x 
-	        						+ ",y="+ y 
-	        						+ positionLine.substring(indexSecondQuote+1);
-	        		//log.debug(newLines[i]);
-	        	}
-	        }
-	        //log.debug("nodes: "+nodes);
-	        log.debug("x, y parsing took "+Benchmark.diffFromLast("milli")+"ms");
-	        
-	        //String fileDataString = fileData.toString()
-	        String fileDataString = String.join("", newLines)
-	        		.replaceAll("[ ,+]\\\\", "")
-	        		.replaceAll("\"", "\\\\\"")
-	        		.replaceAll("\n", "")
+	        return fileData.toString()
+	        		.replaceAll("[ ,+]\\\\", "")	// remove \ DOT uses for continuing on the next line
+	        		.replaceAll("\"", "\\\\\"")		// json encode
+	        		.replaceAll("\n", "")			// remove all white spaces
 	        		.replaceAll("\r", "")
 	        		.replaceAll("\t", "");
-	        /*pos="1.2185e+007,6.0923e+006",*/
-	        // calculate x and y from pos - doing so in js can slow things down 
-	       /* String[] sections = fileDataString.split("pos=\\\\\"");
-	        log.debug("# of records: "+sections.length);
-	        Arrays.asList(sections).forEach(section -> {
-	        	// 2.0065e+005,2.228e+005\",width=4.2066];
-	        	// 2.008e+005,2.2308e+005 2.0077e+005,2.2302e+005 2.0069e+005,2.2287e+005 2.0066e+005,2.2282e+005\"];
-	        	if (section.matches("^[0-9.e+-]+,[0-9.e+-]+\\\\\".*")) {
-	        		log.debug(section);
-	        		nodes++;
-	        		int indexComma = section.indexOf(',');
-	        		int indexQuote = section.indexOf('\\');
-	        		String complete = section.substring(0, indexQuote);
-	        		String x = section.substring(0, indexComma - 1);
-	        		String y = section.substring(indexComma + 1, indexQuote);
-	        		log.debug(indexComma+", "+indexQuote+" "+complete+" |"+x+"|"+y+"|");
-	        		finalString.append(section.replace(complete+"\\\"", complete+"\\\",x="+x+",y="+y));
-	        	}
-	        });
-	        log.debug(finalString.toString());
-	        log.debug("total nodes: "+nodes);*/
-	        //String pattern = "(pos=\"\",)";
-	        return "{\"method\":\"ENINetworkGraph/get/graph/layout\", \"status\":\"SUCCESS\", \"message\":\""+fileDataString+"\"}";
 		} catch (Exception e) {
-			log.debug(e.getMessage(), e);
-			return "{\"method\":\"ENINetworkGraph/get/graph/layout\", \"status\":\"ERROR\", \"message\":\"Error reading the graph layout file from server. "+e.getMessage()+"\"}";
+			log.error(e.getMessage(), e);
+			return "Error reading the graph layout file from server. "+e.getMessage();
 		}
     }
 
