@@ -25,10 +25,10 @@
 		<property name="graphvizFormat" value="${eni.nms.graph.grpahviz.format}" />
 		<property name="graphvizOutputFile" value="${eni.nms.graph.grpahviz.output.file}" />
 		
-		<property name="restServerIP" value="${eni.nms.simulator.rest.server.ip}" />
-		<property name="restServerPort" value="${eni.nms.simulator.rest.server.port}" />
-		<property name="restServerPath" value="${eni.nms.simulator.rest.server.path}" />
-		<property name="nodeNameSuffix" value="${eni.nms.simulator.node.name.suffix}" />
+		<property name="restServerIP" value="${eni.nms.graph.rest.server.ip}" />
+		<property name="restServerPort" value="${eni.nms.graph.rest.server.port}" />
+		<property name="restServerPath" value="${eni.nms.graph.rest.server.path}" />
+		<property name="nodeNameSuffix" value="${eni.nms.graph.node.name.suffix}" />
 	</bean>
 	
 	<!-- config file for json source -->

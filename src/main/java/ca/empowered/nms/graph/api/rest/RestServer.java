@@ -121,8 +121,13 @@ public class RestServer {
 				+ "\"status\":\""+status+"\", "
 				+ "\"payload\":\""+payload+"\"}";
         
-		log.debug("duration["+Benchmark.diffFromLast("milli")+"ms] "+request.requestMethod() 
-				+ " request at " + request.pathInfo() + " Response: " + data);
+        if (data.length() > 200)
+        	log.debug("duration["+Benchmark.diffFromLast("milli")+"ms] "+request.requestMethod() 
+					+ " request at " + request.pathInfo() + " Response: " + data.substring(0, 100)
+					+".."+data.substring(data.length()-100, data.length()));
+        else
+        	log.debug("duration["+Benchmark.diffFromLast("milli")+"ms] "+request.requestMethod() 
+					+ " request at " + request.pathInfo() + " Response: " + data);
 		//response.redirect("index.html");
         response.body( data );
 		
@@ -155,11 +160,8 @@ public class RestServer {
 	        log.debug("reading of layout file took "+Benchmark.diffFromLast("milli")+"ms");
 	        
 	        return fileData.toString()
-	        		.replaceAll("[ ,+]\\\\", "")	// remove \ DOT uses for continuing on the next line
-	        		.replaceAll("\"", "\\\\\"")		// json encode
 	        		.replaceAll("\n", "")			// remove all white spaces
-	        		.replaceAll("\r", "")
-	        		.replaceAll("\t", "");
+	        		.replaceAll("\r", "");
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			return "Error reading the graph layout file from server. "+e.getMessage();

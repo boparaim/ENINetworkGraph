@@ -49,7 +49,13 @@ public class GraphViz {
 		String binary = (SystemUtils.IS_OS_UNIX)?"":".exe";
 		graphvizApplication = Settings.getGraphvizPath()+File.separator+"bin"+File.separator+Settings.getGraphvizLayout()+binary;
 		format = Settings.getGraphvizFormat();
-		inputFile = Settings.getOutputInitialGraphFile();
+		try {
+			inputFile = new File(Settings.getOutputInitialGraphFile()).getCanonicalPath();
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			inputFile = Settings.getOutputInitialGraphFile();
+		}
+		//inputFile = System.getProperty("user.dir")+File.separator+Settings.getOutputInitialGraphFile().replaceAll("/", File.separator);
 		outputFile = Settings.getGraphvizOutputFile();
 	}
 	
@@ -127,6 +133,10 @@ public class GraphViz {
 	        						+ positionLine.substring(indexSecondQuote+1);
 	        		//log.debug(originalLines[i]);
 	        	}
+        		aLine = aLine
+    	        		.replaceAll("[ ,+]\\\\", "")	// remove \ DOT uses for continuing on the next line
+    	        		.replaceAll("\"", "\\\\\"")		// json encode
+    	        		.replaceAll("\t", "");
 				return aLine;
 			})
 			::iterator;

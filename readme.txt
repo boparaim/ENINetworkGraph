@@ -18,7 +18,7 @@ How to get started:
 3. Unzip the downloaded file
 4. cd to unzipped directory
 5. Update value for eni.nms.graph.grpahviz.path in conf/application.properties to location of your Graphviz installation
-6. Run ./bin/simulator.[cmd|sh]
+6. Run ./bin/graph.[cmd|sh]
 7. Open browser at http://127.0.0.1:4567/
 
 Configuration files:

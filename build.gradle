@@ -75,7 +75,7 @@ task createReleaseZip(type: Zip) {
 	 	archiveName = projectName + '-' + projectVersion + '-release.zip'
 	  	destinationDir = file(zipDir)
 	  	from(fileTree(dir: srcDirBin)) {
-	  		include '**/simulator.*'
+	  		include '**/graph.*'
 	  		into dstDirBin
 	  	}
 	  	from(fileTree(dir: srcDirConf)) {
@@ -90,6 +90,10 @@ task createReleaseZip(type: Zip) {
 	  	from(fileTree(dir: srcDirApp)) {
 	  		include '**/' + projectName + '.jar'
 	  		into dstDirApp
+	  	}
+	  	from(fileTree(dir: srcDirData)) {
+	  		include '**/*.gv'
+	  		into dstDirData
 	  	}
 	  	from srcFileReadMe
   	//}

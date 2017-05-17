@@ -7,7 +7,7 @@
 		{
 			"name" : "LoadBalancer",
 			"description" : "",
-			"count" : 1000,
+			"count" : 10,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 100,
@@ -25,7 +25,7 @@
 		{
 			"name" : "Router",
 			"description" : "",
-			"count" : 2000,
+			"count" : 20,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 90,
@@ -47,7 +47,7 @@
 		{
 			"name" : "Switch",
 			"description" : "",
-			"count" : 4000,
+			"count" : 40,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 80,
@@ -69,7 +69,7 @@
 		{
 			"name" : "Host",
 			"description" : "",
-			"count" : 4000,
+			"count" : 40,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 70,
@@ -91,7 +91,7 @@
 		{
 			"name" : "WebApplication",
 			"description" : "",
-			"count" : 8000,
+			"count" : 80,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 40,
@@ -105,7 +105,7 @@
 		{
 			"name" : "NetworkConnection",
 			"description" : "",
-			"count" : 2,
+			"count" : 1,
 			"enabled" : true,
 			"init-state" : "UP",
 			"rank" : 95,

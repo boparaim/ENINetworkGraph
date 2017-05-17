@@ -13,7 +13,7 @@ $(document).ready(function() {
 		dataType: "json",
 		success: function(data) {
 			console.log("success for http://127.0.0.1:4567/ENINetworkGraph/get/graph/layout data: "+data);
-			var graphString = JSON.stringify(data.message)
+			var graphString = JSON.stringify(data.payload)
 									.replace(/\\"/g, '"')		// remove json encoding
 									.replace(/{/g, '{ ')		// add some white space
 									.replace(/\[/g, '[ ');
