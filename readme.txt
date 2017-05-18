@@ -14,7 +14,7 @@ License:
 
 How to get started:
 1. Download and install appropriate Graphviz for your system from http://www.graphviz.org/Download..php
-2. Download the zip file - https://github.com/boparaim/ENINetworkGraph/tree/enidell/dist
+2. Download the zip file - https://github.com/boparaim/ENINetworkGraph/tree/enidell/zips
 3. Unzip the downloaded file
 4. cd to unzipped directory
 5. Update value for eni.nms.graph.grpahviz.path in conf/application.properties to location of your Graphviz installation

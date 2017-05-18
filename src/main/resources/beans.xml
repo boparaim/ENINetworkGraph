@@ -15,6 +15,7 @@
 		id="settings"
 		class="ca.empowered.nms.graph.config.Settings">
 		<property name="appName" value="${eni.nms.graph.appName}" />
+		<property name="appMode" value="${eni.nms.graph.appMode}" />
 		<property name="sourceConfigFile" value="${eni.nms.graph.source.file.config}" />
 		<property name="sourceReadContinuously" value="${eni.nms.graph.source.read.continuously}" />
 		<property name="sourceReadInterval" value="${eni.nms.graph.source.read.interval}" />

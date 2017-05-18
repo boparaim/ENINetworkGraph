@@ -50,13 +50,20 @@ public class GraphViz {
 		graphvizApplication = Settings.getGraphvizPath()+File.separator+"bin"+File.separator+Settings.getGraphvizLayout()+binary;
 		format = Settings.getGraphvizFormat();
 		try {
-			inputFile = new File(Settings.getOutputInitialGraphFile()).getCanonicalPath();
+			inputFile = new File(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
+							+ Settings.getOutputInitialGraphFile()).getCanonicalPath();
 		} catch (IOException e) {
 			log.error(e.getMessage(), e);
 			inputFile = Settings.getOutputInitialGraphFile();
 		}
-		//inputFile = System.getProperty("user.dir")+File.separator+Settings.getOutputInitialGraphFile().replaceAll("/", File.separator);
-		outputFile = Settings.getGraphvizOutputFile();
+		try {
+			outputFile = new File(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
+								+ Settings.getGraphvizOutputFile()).getCanonicalPath();
+		} catch (IOException e) {
+			log.error(e.getMessage(), e);
+			outputFile = Settings.getGraphvizOutputFile();
+		}
+		//inputFile = System.getProperty("user.dir")+File.separator+Settings.getOutputInitialGraphFile().replaceAll("/", File.separator);		
 	}
 	
 	/**
@@ -107,14 +114,16 @@ public class GraphViz {
 	 */
 	public void postProcessing() throws IOException {
 		// make a copy
-		Path source = Paths.get(Settings.getGraphvizOutputFile());
-	    Path destination = Paths.get(Settings.getGraphvizOutputFile()+".temp");	 
+		Path source = Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+Settings.getGraphvizOutputFile());
+	    Path destination = Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+Settings.getGraphvizOutputFile()+".temp");	 
 	    Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 		
 		@SuppressWarnings("resource")
-		Stream<String> fileStream = Files.lines(Paths.get(Settings.getGraphvizOutputFile()+".temp"));
+		Stream<String> fileStream = Files.lines(Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
+										+ Settings.getGraphvizOutputFile()+".temp"));
 		Iterable<String> iterator = fileStream
 			.map(aLine -> {
+				// pos="164.76,1.4233e+005",
 				if (aLine.trim().matches(".*pos=\"[0-9.e+-]+,[0-9.e+-]+\".*")) {
 	        		String positionLine = aLine;
 	        		int indexFirstQuote = positionLine.indexOf('"');						// pos="0.0e+0,1.1e+1",
@@ -133,6 +142,21 @@ public class GraphViz {
 	        						+ positionLine.substring(indexSecondQuote+1);
 	        		//log.debug(originalLines[i]);
 	        	}
+				// image="C:\Users\mboparai\workspace\ENINetworkGraph\data\img\application-300px.png",
+				//else if (aLine.trim().matches(".*image=\".*?\\data\\img\\.*?png\".*")) {
+				else if (aLine.trim().matches(".*image=\".*?data.*?img.*?.png\".*")) {
+					String imageLine = aLine;
+					int indexFirstQuote = imageLine.indexOf('"');
+					int indexSecondQuote = imageLine.indexOf('"', indexFirstQuote+1);
+					
+					String imagePath = imageLine.substring(indexFirstQuote+1, indexSecondQuote);
+					int indexImageStart = imagePath.replaceAll("\\\\", "/").indexOf("/data/img/") + 5;
+					String imageName = imagePath.replaceAll("\\\\", "/").substring(indexImageStart);
+					//log.debug("image line : "+aLine+" "+imagePath+" "+imageName);
+					
+					aLine = imageLine.replace(imagePath, imageName);
+				}
+				
         		aLine = aLine
     	        		.replaceAll("[ ,+]\\\\", "")	// remove \ DOT uses for continuing on the next line
     	        		.replaceAll("\"", "\\\\\"")		// json encode
@@ -141,7 +165,8 @@ public class GraphViz {
 			})
 			::iterator;
 		Files.write(
-			Paths.get(Settings.getGraphvizOutputFile()), iterator, StandardOpenOption.TRUNCATE_EXISTING
+			Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
+						+ Settings.getGraphvizOutputFile()), iterator, StandardOpenOption.TRUNCATE_EXISTING
 		);
         log.debug("x, y parsing took "+Benchmark.diffFromLast("milli")+"ms");
 		

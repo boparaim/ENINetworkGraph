@@ -42,6 +42,19 @@ $(document).ready(function() {
 				//color: 'red'
 			}
 			
+			options.interaction = {
+				hover: true,
+				multiselect: true,
+				navigationButtons: true,
+				keyboard: {
+					enabled: true
+				}
+			};
+			
+			options.manipulation = {
+				enabled: true
+			};
+			
 			// disable layout
 			options.layout = {
 				improvedLayout : false,

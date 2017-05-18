@@ -141,7 +141,8 @@ public class RestServer {
 	 * @return String containing usable graph description in dot format.
 	 */
 	private String readLayoutFile() {
-		File graphLayoutFile = new File(Settings.getGraphvizOutputFile());
+		File graphLayoutFile = new File(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
+										+ Settings.getGraphvizOutputFile());
 		
 		try {
 			if (!graphLayoutFile.exists())
@@ -157,7 +158,7 @@ public class RestServer {
 	        }
 	        reader.close();
 	        
-	        log.debug("reading of layout file took "+Benchmark.diffFromLast("milli")+"ms");
+	        log.debug("reading of layout file "+graphLayoutFile.getCanonicalPath()+" took "+Benchmark.diffFromLast("milli")+"ms");
 	        
 	        return fileData.toString()
 	        		.replaceAll("\n", "")			// remove all white spaces

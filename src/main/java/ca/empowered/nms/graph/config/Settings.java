@@ -14,6 +14,7 @@ public final class Settings {
 	//private static final Logger log = LogManager.getLogger(Settings.class.getName());
 	
 	private static String appName;
+	private static String appMode;
 	private static String sourceConfigFile;
 	private static boolean sourceReadContinuously;
 	private static int sourceReadInterval;
@@ -32,6 +33,12 @@ public final class Settings {
 	}
 	public static void setAppName(String appName) {
 		Settings.appName = appName;
+	}
+	public static String getAppMode() {
+		return appMode;
+	}
+	public static void setAppMode(String appMode) {
+		Settings.appMode = appMode;
 	}
 	public static String getSourceConfigFile() {
 		return sourceConfigFile;

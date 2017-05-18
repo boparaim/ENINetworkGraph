@@ -63,15 +63,17 @@ public class GVFileTopologyOutput extends TopologyOutput {
 			pw.println("\t"+nodeA.getName().replaceAll("[-.]+", "_")+"\t"
 					+ "[ "
 						+ "comment=\""+nodeA.getClassName()+"\", "
+						+ "title=\""+nodeA.getName()+"\", "
 						//+ "id=\""+nodeA.getName()+"\", "
-						//+ "image=\""+nodeA.getName()+"\","
+						+ "image=\""+getImageName(nodeA.getName())+"\","
 						+ "label=\""+nodeA.getName()+"\" "
 					+ "]; ");
 			for (Node nodeB : networkMap.get(nodeA)) {
 				pw.println("\t"+nodeB.getName().replaceAll("[-.]+", "_")+"\t[ "
 						+ "comment=\""+nodeB.getClassName()+"\", "
+						+ "title=\""+nodeB.getName()+"\", "
 						//+ "id=\""+nodeB.getName()+"\", "
-						//+ "image=\""+nodeA.getName()+"\","
+						+ "image=\""+getImageName(nodeB.getName())+"\","
 						+ "label=\""+nodeB.getName()+"\" "
 					+ "]; ");
 				//pw.println("\t"+nodeA.getName().replaceAll("[-.]+", "_")+" -- "+nodeB.getName().replaceAll("[-.]+", "_")+"\t[];");
@@ -97,6 +99,44 @@ public class GVFileTopologyOutput extends TopologyOutput {
 		log.debug("written to intermediate output file in "+Benchmark.diffFromLast("milli")+"ms");
 		
 		return successfullyWroteToFile;
+	}
+	
+	/**
+	 * https://openclipart.org
+	 * 
+	 * Images are in two locations because /data/img is used by graphviz and /public/data/img is used by vis.js
+	 * TODO: Will solve this conflict later. Also remove regex to image logic from code. Put it in some conf file.
+	 * 
+	 * @param nodeName
+	 * @return
+	 */
+	private String getImageName(String nodeName) {
+		String imagePath = "data/img/";
+		if (nodeName.matches(".*[Ll]oad.*?[Bb]alancer.*")) {
+			imagePath = imagePath + "load-balancer-300px";
+		}
+		else if (nodeName.matches(".*[Rr]outer.*")) {
+			imagePath = imagePath + "router-300px";
+		}
+		else if (nodeName.matches(".*[Ss]witch.*")) {
+			imagePath = imagePath + "switch-300px";
+		}
+		else if (nodeName.matches(".*[Aa]pplication.*")) {
+			imagePath = imagePath + "application-300px";
+		}
+		else if (nodeName.matches(".*[Nn]etwork.*")) {
+			imagePath = imagePath + "cloud-300px";
+		}
+		else {
+			imagePath = imagePath + "computer-300px";
+		}
+		try {
+			imagePath = new File(imagePath + ".png").getCanonicalPath();
+			log.debug(imagePath);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+		}
+		return imagePath;
 	}
 	
 }
