@@ -114,13 +114,14 @@ public class GraphViz {
 	 */
 	public void postProcessing() throws IOException {
 		// make a copy
-		Path source = Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+Settings.getGraphvizOutputFile());
-	    Path destination = Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+Settings.getGraphvizOutputFile()+".temp");	 
+		Path source = Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+Settings.getGraphvizOutputFile()).toAbsolutePath();
+	    Path destination = Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+Settings.getGraphvizOutputFile()+".temp").toAbsolutePath();
+	    log.debug("copying from "+source.toString()+" \nto "+destination.toString());
 	    Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 		
-		@SuppressWarnings("resource")
+		//@SuppressWarnings("resource")
 		Stream<String> fileStream = Files.lines(Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
-										+ Settings.getGraphvizOutputFile()+".temp"));
+										+ Settings.getGraphvizOutputFile()+".temp").toAbsolutePath());
 		Iterable<String> iterator = fileStream
 			.map(aLine -> {
 				// pos="164.76,1.4233e+005",
@@ -144,13 +145,13 @@ public class GraphViz {
 	        	}
 				// image="C:\Users\mboparai\workspace\ENINetworkGraph\data\img\application-300px.png",
 				//else if (aLine.trim().matches(".*image=\".*?\\data\\img\\.*?png\".*")) {
-				else if (aLine.trim().matches(".*image=\".*?data.*?img.*?.png\".*")) {
+				else if (aLine.trim().matches(".*image=\".*?public.*?img.*?.png\".*")) {
 					String imageLine = aLine;
 					int indexFirstQuote = imageLine.indexOf('"');
 					int indexSecondQuote = imageLine.indexOf('"', indexFirstQuote+1);
 					
 					String imagePath = imageLine.substring(indexFirstQuote+1, indexSecondQuote);
-					int indexImageStart = imagePath.replaceAll("\\\\", "/").indexOf("/data/img/") + 5;
+					int indexImageStart = imagePath.replaceAll("\\\\", "/").indexOf("/public/img/") + 7;
 					String imageName = imagePath.replaceAll("\\\\", "/").substring(indexImageStart);
 					//log.debug("image line : "+aLine+" "+imagePath+" "+imageName);
 					
@@ -166,8 +167,9 @@ public class GraphViz {
 			::iterator;
 		Files.write(
 			Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
-						+ Settings.getGraphvizOutputFile()), iterator, StandardOpenOption.TRUNCATE_EXISTING
+						+ Settings.getGraphvizOutputFile()).toAbsolutePath(), iterator, StandardOpenOption.TRUNCATE_EXISTING
 		);
+		fileStream.close();
         log.debug("x, y parsing took "+Benchmark.diffFromLast("milli")+"ms");
 		
 	}

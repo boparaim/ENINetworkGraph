@@ -34178,10 +34178,10 @@ return /******/ (function(modules) { // webpackBootstrap
             }
           }
         } else {
-        	console.log('ids not present');
+        	//console.log('ids not present');
           for (var _i = 0; _i < this.body.nodeIndices.length; _i++) {
             var _node2 = this.body.nodes[this.body.nodeIndices[_i]];
-          	console.log('loc2: '+_node2.x+' '+_node2.y);
+          	//console.log('loc2: '+_node2.x+' '+_node2.y);
             dataArray[this.body.nodeIndices[_i]] = { x: Math.round(_node2.x), y: Math.round(_node2.y) };
           }
         }

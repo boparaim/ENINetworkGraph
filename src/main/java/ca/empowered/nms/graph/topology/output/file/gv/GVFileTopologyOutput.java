@@ -111,7 +111,7 @@ public class GVFileTopologyOutput extends TopologyOutput {
 	 * @return
 	 */
 	private String getImageName(String nodeName) {
-		String imagePath = "data/img/";
+		String imagePath = ((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")+"public/img/";
 		if (nodeName.matches(".*[Ll]oad.*?[Bb]alancer.*")) {
 			imagePath = imagePath + "load-balancer-300px";
 		}
@@ -132,7 +132,7 @@ public class GVFileTopologyOutput extends TopologyOutput {
 		}
 		try {
 			imagePath = new File(imagePath + ".png").getCanonicalPath();
-			log.debug(imagePath);
+			//log.debug(imagePath);
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 		}
