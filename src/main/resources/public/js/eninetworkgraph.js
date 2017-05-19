@@ -287,7 +287,7 @@ $(document).ready(function() {
 		storedLayouts = $.distinct(storedLayouts);
 		$("#toolbar #layout").empty();
 		$.each(storedLayouts, function(i, value) {
-			console.log('key: '+value);
+			//console.log('key: '+value);
 			//$("#toolbar #layout").selectmenu('option', value, true);
 			$('<option/>').val(i).text(value).appendTo("#toolbar #layout");
 		});
@@ -319,7 +319,7 @@ $(document).ready(function() {
 				console.log('loading '+layoutName);
 				var nodes = JSON.parse(localStorage.getItem(layoutName+'Nodes'));
 				var edges = JSON.parse(localStorage.getItem(layoutName+'Edges'));
-				console.log(nodes);
+				//console.log(nodes);
 				
 				var options = {};
 				var data = {

@@ -34202,9 +34202,9 @@ return /******/ (function(modules) { // webpackBootstrap
         for (var nodeId in dataset._data) {
           if (dataset._data.hasOwnProperty(nodeId)) {
             var node = this.body.nodes[nodeId];
-        	console.log('storing locations');
+        	//console.log('storing locations');
             if (dataset._data[nodeId].x != Math.round(node.x) || dataset._data[nodeId].y != Math.round(node.y)) {
-            	console.log(node.id+' '+node.x+' '+node.y);
+            	//console.log(node.id+' '+node.x+' '+node.y);
               dataArray.push({ id: node.id, x: Math.round(node.x), y: Math.round(node.y) });
             }
           }

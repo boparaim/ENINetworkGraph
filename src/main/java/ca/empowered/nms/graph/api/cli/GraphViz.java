@@ -119,9 +119,9 @@ public class GraphViz {
 	    log.debug("copying from "+source.toString()+" \nto "+destination.toString());
 	    Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
 		
-		//@SuppressWarnings("resource")
 		Stream<String> fileStream = Files.lines(Paths.get(((Settings.getAppMode().equalsIgnoreCase("lab"))?"bin/":"")
 										+ Settings.getGraphvizOutputFile()+".temp").toAbsolutePath());
+		@SuppressWarnings("resource")
 		Iterable<String> iterator = fileStream
 			.map(aLine -> {
 				// pos="164.76,1.4233e+005",
@@ -162,6 +162,7 @@ public class GraphViz {
     	        		.replaceAll("[ ,+]\\\\", "")	// remove \ DOT uses for continuing on the next line
     	        		.replaceAll("\"", "\\\\\"")		// json encode
     	        		.replaceAll("\t", "");
+        		
 				return aLine;
 			})
 			::iterator;
@@ -170,7 +171,7 @@ public class GraphViz {
 						+ Settings.getGraphvizOutputFile()).toAbsolutePath(), iterator, StandardOpenOption.TRUNCATE_EXISTING
 		);
 		fileStream.close();
-        log.debug("x, y parsing took "+Benchmark.diffFromLast("milli")+"ms");
+        log.debug("post processing took "+Benchmark.diffFromLast("milli")+"ms");
 		
 	}
 

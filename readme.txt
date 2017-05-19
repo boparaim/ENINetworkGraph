@@ -6,11 +6,13 @@ Credits:
 1. http://www.graphviz.org/
 2. http://visjs.org/
 3. https://github.com/spring-projects/spring-framework
+4. https://openclipart.org/
 
 License:
 1. Graphviz is released under Eclipse Public License - v 1.0. http://www.graphviz.org/License.php
 2. Vis.js is dual licensed under both Apache 2.0 and MIT. http://visjs.org/index.html#licenses
 3. The Spring Framework is released under version 2.0 of the Apache License. http://www.apache.org/licenses/LICENSE-2.0
+4. Images - https://openclipart.org/share
 
 How to get started:
 1. Download and install appropriate Graphviz for your system from http://www.graphviz.org/Download..php
@@ -27,7 +29,9 @@ Configuration files:
 3. Application logs settings are in conf/log4j2.properties
 
 TODOs:
-1. Allow user to load and store the changed layout.
+1. clustering
+2. show progress in browser
+3. export topology to a file
 
 Build the project:
 1. Set JAVA_HOME in gradlew
