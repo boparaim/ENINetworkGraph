@@ -85,6 +85,12 @@ public class GraphViz {
 				inputFile, 
 				"-o"+outputFile
 			}).start();
+		log.debug("waiting for Graphviz ");
+		while (process.isAlive()) {
+			if (System.currentTimeMillis() % 1234 == 0)
+				System.out.print(".");
+			try {Thread.sleep(1000);} catch (Exception e) {log.error(e.getMessage(), e);}
+		}
 		InputStream stdout = process.getInputStream();
 		InputStream stderr = process .getErrorStream();
 		//OutputStream stdin = process.getOutputStream();

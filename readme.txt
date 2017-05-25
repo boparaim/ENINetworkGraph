@@ -32,6 +32,19 @@ TODOs:
 1. clustering
 2. show progress in browser
 3. export topology to a file
+4. allow small multiple graphs instead of one huge graph
+
+Benchmarks:
+Each result is average of three runs.
+				nodes	levels	creation	connection		computation		post-processing
+I>	windows 7 64bit 32GB i7 2x2.9GHz
+	1. circo
+		i.  	52		7		2ms			6ms				45ms			10ms
+		ii. 	511		7		3ms			53ms			131ms			106ms
+		iii.	5,101	7		11ms		1,321ms			873ms			503ms
+		iv.		20,410	7		35ms		11,357ms		1,258ms			750ms
+		v.		34,810	7		80ms		95,100ms		84,900ms		3,000ms				<- vis.js starts crashing here on zoom in
+		iv. 	51,010	7		89ms		179,939ms		
 
 Build the project:
 1. Set JAVA_HOME in gradlew

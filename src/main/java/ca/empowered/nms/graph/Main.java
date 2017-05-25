@@ -32,7 +32,7 @@ public class Main {
 		
 		Benchmark.init();
 		
-		log.info("INIT: ENINetworkSimulator");
+		log.info("INIT: ENINetworkGraph");
 				
 		try {
 			// initialize Spring

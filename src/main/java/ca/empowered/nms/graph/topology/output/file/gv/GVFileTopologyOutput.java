@@ -127,6 +127,12 @@ public class GVFileTopologyOutput extends TopologyOutput {
 		else if (nodeName.matches(".*[Nn]etwork.*")) {
 			imagePath = imagePath + "cloud-300px";
 		}
+		else if (nodeName.matches(".*[Ii]nterface.*")) {
+			imagePath = imagePath + "port-300px";
+		}
+		else if (nodeName.matches(".*[Cc]ard.*")) {
+			imagePath = imagePath + "card-300px";
+		}
 		else {
 			imagePath = imagePath + "computer-300px";
 		}
