@@ -16,6 +16,7 @@
 		class="ca.empowered.nms.graph.config.Settings">
 		<property name="appName" value="${eni.nms.graph.appName}" />
 		<property name="appMode" value="${eni.nms.graph.appMode}" />
+		<property name="sourceDataFile" value="${eni.nms.graph.source.file.data}" />
 		<property name="sourceConfigFile" value="${eni.nms.graph.source.file.config}" />
 		<property name="sourceReadContinuously" value="${eni.nms.graph.source.read.continuously}" />
 		<property name="sourceReadInterval" value="${eni.nms.graph.source.read.interval}" />
@@ -32,6 +33,13 @@
 		<property name="nodeNameSuffix" value="${eni.nms.graph.node.name.suffix}" />
 	</bean>
 	
+	<!-- data file for xml source -->
+	<bean
+		id="xmlFileTopologySource"
+		class="ca.empowered.nms.graph.topology.source.file.xml.XmlFileTopologySource">
+		<constructor-arg type="org.springframework.core.io.Resource" value="#{settings.sourceDataFile}" />
+	</bean>
+	
 	<!-- config file for json source -->
 	<bean
 		id="jsonFileTopologySource"
@@ -43,7 +51,8 @@
 	<bean
 		id="topologySourceManager"
 		class="ca.empowered.nms.graph.topology.source.TopologySourceManager">
-		<constructor-arg  type="ca.empowered.nms.graph.topology.source.TopologySource"  ref="jsonFileTopologySource" />
+		<!-- constructor-arg  type="ca.empowered.nms.graph.topology.source.TopologySource"  ref="jsonFileTopologySource" /-->
+		<constructor-arg  type="ca.empowered.nms.graph.topology.source.TopologySource"  ref="xmlFileTopologySource" />
 	</bean>
 	
 	<!-- graphviz dot output -->

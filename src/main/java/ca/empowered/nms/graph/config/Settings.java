@@ -15,6 +15,7 @@ public final class Settings {
 	
 	private static String appName;
 	private static String appMode;
+	private static String sourceDataFile;
 	private static String sourceConfigFile;
 	private static boolean sourceReadContinuously;
 	private static int sourceReadInterval;
@@ -39,6 +40,12 @@ public final class Settings {
 	}
 	public static void setAppMode(String appMode) {
 		Settings.appMode = appMode;
+	}
+	public static String getSourceDataFile() {
+		return sourceDataFile;
+	}
+	public static void setSourceDataFile(String sourceDataFile) {
+		Settings.sourceDataFile = sourceDataFile;
 	}
 	public static String getSourceConfigFile() {
 		return sourceConfigFile;
