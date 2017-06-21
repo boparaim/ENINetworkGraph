@@ -241,15 +241,15 @@ public class XmlFileTopologySource extends TopologySource {
 		}
 		
 		for (Relationship rel : relationships) {
-			log.debug("source - target : "+rel.sourceDevice+" "+rel.targetDevice);
+			//log.debug("source - target : "+rel.sourceDevice+" "+rel.targetDevice);
 			Device sourceDevice = devices.get(rel.sourceDevice);
 			Device targetDevice = devices.get(rel.targetDevice);
 			if (sourceDevice == null
 					|| targetDevice == null)
 				continue;
 			
-			log.debug("source device: "+sourceDevice.toString());
-			log.debug("target device: "+targetDevice.toString());
+			//log.debug("source device: "+sourceDevice.toString());
+			//log.debug("target device: "+targetDevice.toString());
 			
 			Node sourceNode = theseNodes.get(rel.sourceDevice);
 			Node targetNode = theseNodes.get(rel.targetDevice);
